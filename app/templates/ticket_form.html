@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Submit Ticket</title>
+</head>
+<body>
+
+<h2>Welcome {{ session['username'] }}</h2>
+
+<form method="POST" action="/submit_ticket">
+    Name: <input type="text" name="name"><br><br>
+    Department: <input type="text" name="department"><br><br>
+    Issue: <textarea name="issue"></textarea><br><br>
+    <button type="submit">Submit Ticket</button>
+</form>
+
+<a href="/logout">Logout</a>
+
+</body>
+</html>

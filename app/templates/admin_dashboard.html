@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f6dada;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background: #f96e33;
+            padding: 20px;
+            color: rgb(30, 26, 26);
+            text-align: center;
+            font-size: 26px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .header a {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            background: #c0392b;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            flex: 1;
+            min-width: 220px;
+            background: rgba(247, 154, 72, 0.937);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .card p {
+            margin-top: 10px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th {
+            background: #273f9f;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .badge {
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .b-pending { background: #535762; }
+        .b-progress { background: #5ca5d6; }
+        .b-resolved { background: #27AE60; }
+
+        .btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn-view { background: #4C6EF5; }
+        .btn-delete { background: #E74C3C; }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    Admin Dashboard
+    <a href="/admin/logout" onclick="return confirm('Are you sure you want to logout?');">
+        Logout
+    </a>
+</div>
+
+<div class="container">
+
+    <!-- Cards -->
+    <div class="cards">
+        <div class="card">
+            <h3>Pending</h3>
+            <p>{{ pending_count | default(0) }}</p>
+        </div>
+
+        <div class="card">
+            <h3>In Progress</h3>
+            <p>{{ progress_count | default(0) }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Resolved</h3>
+            <p>{{ resolved_count | default(0) }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Total Tickets</h3>
+            <p>
+                {{ (pending_count | default(0)) +
+                   (progress_count | default(0)) +
+                   (resolved_count | default(0)) }}
+            </p>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>User Name</th>
+            <th>Department</th>
+            <th>Issue</th>
+            <th>Status</th>
+            <th>Assigned To</th>
+            <th>Created</th>
+            <th>Action</th>
+        </tr>
+
+        {% for t in tickets %}
+        <tr>
+            <td>{{ t.id }}</td>
+            <td>{{ t.user_name }}</td>
+            <td>{{ t.department }}</td>
+            <td>{{ t.issue }}</td>
+
+            <td>
+                {% if t.status == "Pending" %}
+                    <span class="badge b-pending">Pending</span>
+                {% elif t.status == "In Progress" %}
+                    <span class="badge b-progress">In Progress</span>
+                {% else %}
+                    <span class="badge b-resolved">Resolved</span>
+                {% endif %}
+            </td>
+
+            <td>{{ t.assigned_to or "Not Assigned" }}</td>
+            <td>{{ t.created_at.strftime("%d-%m-%Y %I:%M %p") }}</td>
+
+            <td>
+                <a href="/admin/ticket/{{ t.id }}" class="btn btn-view">View</a>
+
+                <form method="POST" action="/admin/ticket/{{ t.id }}/delete"
+                      style="display:inline;"
+                      onsubmit="return confirm('Delete this ticket?');">
+                    <button class="btn btn-delete">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+</body>
+</html>

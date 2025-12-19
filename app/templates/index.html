@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Vihang Ahead | Login</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', Arial, sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+}
+
+/* LEFT */
+.left{
+    width:35%;
+    background:#ffffff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.login-box{
+    width:320px;
+}
+
+.login-box h2{
+    margin-bottom:25px;
+    color:#333;
+}
+
+.login-box input{
+    width:100%;
+    padding:14px;
+    margin-bottom:18px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:15px;
+}
+
+.login-box button{
+    width:100%;
+    padding:14px;
+    background:#ff7a00;
+    border:none;
+    border-radius:6px;
+    color:#fff;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.login-box button:hover{
+    background:#f0e7de;
+}
+
+.error{
+    color:red;
+    margin-top:10px;
+    font-size:14px;
+}
+
+/* RIGHT */
+.right{
+    width:65%;
+    background:#f79f4c;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+.right img{
+    width:120px;
+    margin-bottom:20px;
+}
+
+.right h1{
+    font-size:46px;
+    color:#555;
+    letter-spacing:2px;
+}
+
+.right span{
+    color:#333;
+}
+
+.right p{
+    margin-top:10px;
+    font-size:18px;
+    color:#444;
+    letter-spacing:1px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LEFT LOGIN -->
+<div class="left">
+    <div class="login-box">
+        <h2>User Login</h2>
+
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+
+        <button onclick="login()">Login</button>
+        <p class="error" id="error"></p>
+    </div>
+</div>
+
+<!-- RIGHT BRAND -->
+<div class="right">
+    <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Vihang Ahead">
+    <h1>VIHANG<br><span>AHEAD</span></h1>
+    <p>REYANSHP REALTY LLP</p>
+</div>
+
+<script>
+const users = [
+    { username: "aaditya", password: "aaditya@123" },
+    { username: "abhishek", password: "abhishek@123" },
+    { username: "adminva", password: "adminva@123" },
+    { username: "ahmad", password: "ahmad@123" },
+    { username: "ajay", password: "ajay@123" },
+    { username: "alokasingh", password: "alokasingh@123" },
+    { username: "aloksingh", password: "aloksingh@123" },
+    { username: "arvind", password: "arvind@123" },
+    { username: "ashwin", password: "ashwin@123" },
+    { username: "asif", password: "asif@123" },
+    { username: "atulsingh", password: "atulsingh@123" },
+    { username: "dayavathi", password: "dayavathi@123" },
+    { username: "dilipsumra", password: "dilipsumra@123" },
+    { username: "dinesh", password: "dinesh@123" },
+    { username: "engineering", password: "engineering@123" },
+    { username: "hrva", password: "hrva@123" },
+    { username: "itva", password: "itva@123" },
+    { username: "jignesh", password: "jignesh@123" },
+    { username: "joealla", password: "joealla@123" },
+    { username: "jyoti", password: "jyoti@123" },
+    { username: "kajal", password: "kajal@123" },
+    { username: "kalpesh", password: "kalpesh@123" },
+    { username: "kishor", password: "kishor@123" },
+    { username: "krunal", password: "krunal@123" },
+    { username: "luxuria", password: "luxuria@123" },
+    { username: "meet", password: "meet@123" },
+    { username: "navneet", password: "navneet@123" },
+    { username: "neeraj", password: "neeraj@123" },
+    { username: "nehajha", password: "nehajha@123" },
+    { username: "nikhil", password: "nikhil@123" },
+    { username: "niteshsingh", password: "niteshsingh@123" },
+    { username: "palak", password: "palak@123" },
+    { username: "prabhakar", password: "prabhakar@123" },
+    { username: "praful", password: "praful@123" },
+    { username: "prashant", password: "prashant@123" },
+    { username: "prathmesh", password: "prathmesh@123" },
+    { username: "pratiksha", password: "pratiksha@123" },
+    { username: "praveen", password: "praveen@123" },
+    { username: "pre", password: "pre@123" },
+    { username: "priyanka", password: "priyanka@123" },
+    { username: "ravi", password: "ravi@123" },
+    { username: "rhea", password: "rhea@123" },
+    { username: "ritaardoreraj", password: "ritaardoreraj@123" },
+    { username: "rohit", password: "rohit@123" },
+    { username: "sachin", password: "sachin@123" },
+    { username: "sagar", password: "sagar@123" },
+    { username: "sanika", password: "sanika@123" },
+    { username: "sanjana", password: "sanjana@123" },
+    { username: "sanjay", password: "sanjay@123" },
+    { username: "sreweshpandey", password: "sreweshpandey@123" },
+    { username: "surojeet", password: "surojeet@123" },
+    { username: "uddhavi", password: "uddhavi@123" },
+    { username: "ujjwala", password: "ujjwala@123" },
+    { username: "ventura", password: "ventura@123" },
+    { username: "vinit", password: "vinit@123" },
+    { username: "vishakha", password: "vishakha@123" },
+    { username: "vishalpandey", password: "vishalpandey@123" },
+    { username: "yogesh", password: "yogesh@123" },
+    { username: "simon", password: "simon@123" },
+    { username: "ankush", password: "ankush@123" }
+];
+
+
+function login(){
+    const username = document.getElementById("username").value.toLowerCase();
+    const password = document.getElementById("password").value;
+    const error = document.getElementById("error");
+
+    const user = users.find(
+        u => u.username === username && u.password === password
+    );
+
+    if(user){
+        localStorage.setItem("loggedInUser", username);
+        window.location.href = "user_dashboard";
+    } else {
+        error.innerText = "Invalid login credentials";
+    }
+}
+</script>
+
+</body>
+</html>

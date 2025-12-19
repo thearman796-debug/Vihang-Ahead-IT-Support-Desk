@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>Ticket #{{ t.id }}</h4>
+<div class="card p-3 shadow-sm mb-3">
+  <p><strong>User:</strong> {{ t.user_name }}</p>
+  <p><strong>Department:</strong> {{ t.department }}</p>
+  <p><strong>Issue:</strong><br> {{ t.issue }}</p>
+  <p><strong>Status:</strong> {{ t.status }}</p>
+  <p><strong>Assigned to:</strong> {{ t.assigned_to or 'Unassigned' }}</p>
+</div>
+
+<div class="card p-3 shadow-sm">
+  <h5>Update Ticket</h5>
+  <form method="POST" action="{{ url_for('admin.update_ticket', ticket_id=t.id) }}">
+    <select name="status" class="form-select mb-2">
+      <option value="Pending" {% if t.status == 'Pending' %}selected{% endif %}>Pending</option>
+      <option value="In Progress" {% if t.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+      <option value="Resolved" {% if t.status == 'Resolved' %}selected{% endif %}>Resolved</option>
+    </select>
+    <input name="assigned_to" class="form-control mb-2" placeholder="Assign to (admin name)" value="{{ t.assigned_to or '' }}">
+    <button class="btn btn-success">Update</button>
+  </form>
+</div>
+{% endblock %}
